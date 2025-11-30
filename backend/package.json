@@ -1,31 +1,15 @@
 {
   "name": "kajkori-backend",
   "version": "1.0.0",
-  "description": "KajKori Backend API - Job Matching Platform",
+  "description": "KajKori Backend API",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "test": "jest --coverage"
+    "start": "node src/server.js"
   },
-  "keywords": ["jobs", "bangladesh", "matching", "blue-collar"],
-  "author": "KajKori Team",
-  "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
-    "pg": "^8.11.3",
-    "sequelize": "^6.35.0",
-    "redis": "^4.6.11",
-    "ioredis": "^5.3.2",
-    "socket.io": "^4.6.2",
-    "jsonwebtoken": "^9.0.2",
-    "bcryptjs": "^2.4.3",
-    "dotenv": "^16.3.1",
     "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "compression": "^1.7.4",
-    "morgan": "^1.10.0",
-    "winston": "^3.11.0"
+    "dotenv": "^16.3.1"
   },
   "engines": {
     "node": ">=18.0.0"
