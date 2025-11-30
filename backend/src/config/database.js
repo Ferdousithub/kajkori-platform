@@ -1,47 +1,18 @@
-const { Sequelize } = require('sequelize');
-const logger = require('../utils/logger');
+const { Pool } = require('pg');
 
-const sequelize = new Sequelize(
-  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/kajkori',
-  {
-    dialect: 'postgres',
-    logging: process.env.NODE_ENV === 'development' ? msg => logger.debug(msg) : false,
-    pool: {
-      max: 10,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    },
-    define: {
-      timestamps: true,
-      underscored: true,
-      freezeTableName: true
-    }
-  }
-);
+// Create PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+});
 
-async function connectDatabase() {
-  try {
-    await sequelize.authenticate();
-    
-    if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync({ alter: true });
-      logger.info('Database synced');
-    }
-    
-    return sequelize;
-  } catch (error) {
-    logger.error('Unable to connect to database:', error);
-    throw error;
-  }
-}
+// Test connection
+pool.on('connect', () => {
+  console.log('✅ Connected to PostgreSQL database');
+});
 
-async function closeDatabase() {
-  await sequelize.close();
-}
+pool.on('error', (err) => {
+  console.error('❌ Database connection error:', err);
+});
 
-module.exports = {
-  sequelize,
-  connectDatabase,
-  closeDatabase
-};
+module.exports = pool;
